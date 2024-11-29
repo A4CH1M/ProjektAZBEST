@@ -1,0 +1,1 @@
+sprawdzamy czy git działa
