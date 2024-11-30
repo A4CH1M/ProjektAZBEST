@@ -1,0 +1,18 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    Plan zajęć
+{% endblock %}
+
+{% block stylesheets %}
+{#  możliwy include, whatever  #}
+{% endblock %}
+
+{% block body %}
+    {% block controls %}
+        {% include 'controls/controls.html.twig' %}
+    {% endblock %}
+    {% block callendar %}
+        {% include 'callendar/callendar.html.twig' %}
+    {% endblock %}
+{% endblock %}

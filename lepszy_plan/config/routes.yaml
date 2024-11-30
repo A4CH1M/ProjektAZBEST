@@ -1,3 +1,6 @@
+index:
+    path: /
+    controller: App\Controller\ScheduleController::indexAction
 controllers:
     resource:
         path: ../src/Controller/
