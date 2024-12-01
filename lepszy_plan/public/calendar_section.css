@@ -1,0 +1,30 @@
+#main-container {
+    display: flex;
+    height: 85vh;
+}
+
+#calendar {
+    flex-grow: 1;
+    background-color: #333;
+    padding: 20px;
+    margin-left: 40px;
+    margin-right: 20px;
+}
+
+#calendar table {
+    width: 100%;
+    border-collapse: collapse;
+    color: white;
+}
+
+#calendar th, #calendar td {
+    padding: 10px;
+    text-align: center;
+    border: 1px solid #555;
+}
+
+#legend {
+    position: absolute;
+    bottom: 10px;
+    color: white;
+}
