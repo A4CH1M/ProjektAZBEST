@@ -2,11 +2,11 @@
 
 namespace App\Entity;
 
-use App\Repository\GrupyRepository;
+use App\Repository\TeacherRepository;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: GrupyRepository::class)]
-class Grupy
+#[ORM\Entity(repositoryClass: TeacherRepository::class)]
+class Teacher
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -14,7 +14,7 @@ class Grupy
     private ?int $id = null;
 
     #[ORM\Column(length: 100)]
-    private ?string $numer = null;
+    private ?string $fullName = null;
 
     public function getId(): ?int
     {
@@ -28,14 +28,14 @@ class Grupy
         return $this;
     }
 
-    public function getNumer(): ?string
+    public function getFullName(): ?string
     {
-        return $this->numer;
+        return $this->fullName;
     }
 
-    public function setNumer(string $numer): static
+    public function setFullName(string $fullName): static
     {
-        $this->numer = $numer;
+        $this->fullName = $fullName;
 
         return $this;
     }

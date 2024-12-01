@@ -2,11 +2,11 @@
 
 namespace App\Entity;
 
-use App\Repository\PrzedmiotyRepository;
+use App\Repository\ClassTypeRepository;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: PrzedmiotyRepository::class)]
-class Przedmioty
+#[ORM\Entity(repositoryClass: ClassTypeRepository::class)]
+class ClassType
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -14,7 +14,7 @@ class Przedmioty
     private ?int $id = null;
 
     #[ORM\Column(length: 100)]
-    private ?string $nazwa = null;
+    private ?string $type = null;
 
     public function getId(): ?int
     {
@@ -28,14 +28,14 @@ class Przedmioty
         return $this;
     }
 
-    public function getNazwa(): ?string
+    public function getType(): ?string
     {
-        return $this->nazwa;
+        return $this->type;
     }
 
-    public function setNazwa(string $nazwa): static
+    public function setType(string $type): static
     {
-        $this->nazwa = $nazwa;
+        $this->type = $type;
 
         return $this;
     }

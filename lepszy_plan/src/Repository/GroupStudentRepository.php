@@ -2,39 +2,39 @@
 
 namespace App\Repository;
 
-use App\Entity\Sale;
+use App\Entity\GroupStudent;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * @extends ServiceEntityRepository<Sale>
+ * @extends ServiceEntityRepository<GroupStudent>
  */
-class SaleRepository extends ServiceEntityRepository
+class GroupStudentRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, Sale::class);
+        parent::__construct($registry, GroupStudent::class);
     }
 
     //    /**
-    //     * @return Sale[] Returns an array of Sale objects
+    //     * @return GroupStudent[] Returns an array of GroupStudent objects
     //     */
     //    public function findByExampleField($value): array
     //    {
-    //        return $this->createQueryBuilder('s')
-    //            ->andWhere('s.exampleField = :val')
+    //        return $this->createQueryBuilder('g')
+    //            ->andWhere('g.exampleField = :val')
     //            ->setParameter('val', $value)
-    //            ->orderBy('s.id', 'ASC')
+    //            ->orderBy('g.id', 'ASC')
     //            ->setMaxResults(10)
     //            ->getQuery()
     //            ->getResult()
     //        ;
     //    }
 
-    //    public function findOneBySomeField($value): ?Sale
+    //    public function findOneBySomeField($value): ?GroupStudent
     //    {
-    //        return $this->createQueryBuilder('s')
-    //            ->andWhere('s.exampleField = :val')
+    //        return $this->createQueryBuilder('g')
+    //            ->andWhere('g.exampleField = :val')
     //            ->setParameter('val', $value)
     //            ->getQuery()
     //            ->getOneOrNullResult()

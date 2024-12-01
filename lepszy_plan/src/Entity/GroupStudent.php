@@ -2,11 +2,11 @@
 
 namespace App\Entity;
 
-use App\Repository\GrupyStudenciRepository;
+use App\Repository\GroupStudentRepository;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: GrupyStudenciRepository::class)]
-class GrupyStudenci
+#[ORM\Entity(repositoryClass: GroupStudentRepository::class)]
+class GroupStudent
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -15,35 +15,35 @@ class GrupyStudenci
 
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(nullable: false)]
-    private ?Grupy $grupa = null;
+    private ?Group $group = null;
 
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(nullable: false)]
-    private ?Studenci $student = null;
+    private ?Student $student = null;
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getGrupa(): ?Grupy
+    public function getGroup(): ?Group
     {
-        return $this->grupa;
+        return $this->group;
     }
 
-    public function setGrupa(?Grupy $grupa): static
+    public function setGroup(?Group $group): static
     {
-        $this->grupa = $grupa;
+        $this->group = $group;
 
         return $this;
     }
 
-    public function getStudent(): ?Studenci
+    public function getStudent(): ?Student
     {
         return $this->student;
     }
 
-    public function setStudent(?Studenci $student): static
+    public function setStudent(?Student $student): static
     {
         $this->student = $student;
 
