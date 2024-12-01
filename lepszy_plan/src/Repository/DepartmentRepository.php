@@ -2,22 +2,22 @@
 
 namespace App\Repository;
 
-use App\Entity\Wydzialy;
+use App\Entity\Department;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * @extends ServiceEntityRepository<Wydzialy>
+ * @extends ServiceEntityRepository<Department>
  */
-class WydzialyRepository extends ServiceEntityRepository
+class DepartmentRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, Wydzialy::class);
+        parent::__construct($registry, Department::class);
     }
 
     //    /**
-    //     * @return Wydzialy[] Returns an array of Wydzialy objects
+    //     * @return Department[] Returns an array of Department objects
     //     */
     //    public function findByExampleField($value): array
     //    {
@@ -31,7 +31,7 @@ class WydzialyRepository extends ServiceEntityRepository
     //        ;
     //    }
 
-    //    public function findOneBySomeField($value): ?Wydzialy
+    //    public function findOneBySomeField($value): ?Department
     //    {
     //        return $this->createQueryBuilder('w')
     //            ->andWhere('w.exampleField = :val')

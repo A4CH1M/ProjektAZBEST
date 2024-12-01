@@ -2,11 +2,11 @@
 
 namespace App\Entity;
 
-use App\Repository\WydzialyRepository;
+use App\Repository\GroupRepository;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: WydzialyRepository::class)]
-class Wydzialy
+#[ORM\Entity(repositoryClass: GroupRepository::class)]
+class Group
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -14,7 +14,7 @@ class Wydzialy
     private ?int $id = null;
 
     #[ORM\Column(length: 100)]
-    private ?string $nazwa = null;
+    private ?string $number = null;
 
     public function getId(): ?int
     {
@@ -28,14 +28,14 @@ class Wydzialy
         return $this;
     }
 
-    public function getNazwa(): ?string
+    public function getNumber(): ?string
     {
-        return $this->nazwa;
+        return $this->number;
     }
 
-    public function setNazwa(string $nazwa): static
+    public function setNumber(string $number): static
     {
-        $this->nazwa = $nazwa;
+        $this->number = $number;
 
         return $this;
     }

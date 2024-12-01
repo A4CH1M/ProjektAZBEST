@@ -2,11 +2,11 @@
 
 namespace App\Entity;
 
-use App\Repository\TypyZajecRepository;
+use App\Repository\DepartmentRepository;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: TypyZajecRepository::class)]
-class TypyZajec
+#[ORM\Entity(repositoryClass: DepartmentRepository::class)]
+class Department
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -14,7 +14,7 @@ class TypyZajec
     private ?int $id = null;
 
     #[ORM\Column(length: 100)]
-    private ?string $typ = null;
+    private ?string $name = null;
 
     public function getId(): ?int
     {
@@ -28,14 +28,14 @@ class TypyZajec
         return $this;
     }
 
-    public function getTyp(): ?string
+    public function getName(): ?string
     {
-        return $this->typ;
+        return $this->name;
     }
 
-    public function setTyp(string $typ): static
+    public function setName(string $name): static
     {
-        $this->typ = $typ;
+        $this->name = $name;
 
         return $this;
     }

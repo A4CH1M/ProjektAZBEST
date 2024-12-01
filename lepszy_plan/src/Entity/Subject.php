@@ -2,11 +2,11 @@
 
 namespace App\Entity;
 
-use App\Repository\ProwadzacyRepository;
+use App\Repository\SubjectRepository;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: ProwadzacyRepository::class)]
-class Prowadzacy
+#[ORM\Entity(repositoryClass: SubjectRepository::class)]
+class Subject
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -14,7 +14,7 @@ class Prowadzacy
     private ?int $id = null;
 
     #[ORM\Column(length: 100)]
-    private ?string $imienazwisko = null;
+    private ?string $name = null;
 
     public function getId(): ?int
     {
@@ -28,14 +28,14 @@ class Prowadzacy
         return $this;
     }
 
-    public function getImienazwisko(): ?string
+    public function getName(): ?string
     {
-        return $this->imienazwisko;
+        return $this->name;
     }
 
-    public function setImienazwisko(string $imienazwisko): static
+    public function setName(string $name): static
     {
-        $this->imienazwisko = $imienazwisko;
+        $this->name = $name;
 
         return $this;
     }
