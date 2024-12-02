@@ -6,6 +6,9 @@ use App\Entity\Department;
 use App\Entity\ClassGroup;
 use App\Entity\Room;
 use App\Entity\Subject;
+use App\Repository\ClassGroupRepository;
+use App\Repository\RoomRepository;
+use App\Repository\TeacherRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Doctrine\ORM\EntityManagerInterface;
@@ -13,12 +16,24 @@ use App\Entity\Teacher;
 
 class ApiDataController extends AbstractController
 {
-    private EntityManagerInterface $entityManager;
+    private readonly EntityManagerInterface $entityManager;
 
-    public function __construct(EntityManagerInterface $entityManager)
+    private readonly TeacherRepository $teacherRepository;
+    private readonly RoomRepository $roomRepository;
+    private readonly ClassGroupRepository $classGroupRepository;
+
+    public function __construct(EntityManagerInterface $entityManager,
+                                TeacherRepository $teacherRepository,
+                                RoomRepository $roomRepository,
+                                ClassGroupRepository $classGroupRepository
+    )
     {
         $this->entityManager = $entityManager;
+        $this->teacherRepository = $teacherRepository;
+        $this->roomRepository = $roomRepository;
+        $this->classGroupRepository = $classGroupRepository;
     }
+
 
     public function teacherDownloadAction(): Response
     {
@@ -62,6 +77,7 @@ class ApiDataController extends AbstractController
         }
 
         $departments = [];
+        $rooms = [];
         foreach ($data as $entry) {
             if (isset($entry['item'])) {
                 if (str_contains($entry['item'], ' ')) {
@@ -87,10 +103,15 @@ class ApiDataController extends AbstractController
                     $department = $departments[$departmentName];
                 }
 
-                $room = new Room();
-                $room->setNumber($roomNumber);
-                $room->setDepartment($department);
-                $this->entityManager->persist($room);
+                if (!isset($rooms[$roomNumber])) {
+
+                    $room = new Room();
+                    $room->setNumber($roomNumber);
+                    $room->setDepartment($department);
+                    $this->entityManager->persist($room);
+
+                    $rooms[$roomNumber] = $room;
+                }
             }
         }
 
@@ -140,10 +161,11 @@ class ApiDataController extends AbstractController
 
     public function groupDownloadAction(): Response
     {
+        ini_set("memory_limit", "-1");
+
         $url = 'https://plan.zut.edu.pl/schedule.php?kind=group';
         $json = file_get_contents($url);
 
-        //this is necessary trust us...
         $kaboom = preg_split("/\\r\\n|\\r|\\n/", $json);
         $json = end($kaboom);
 
@@ -154,6 +176,7 @@ class ApiDataController extends AbstractController
         }
 
         $groups = [];
+
         foreach ($data as $entry) {
             $groupName = $entry['item'];
 
@@ -163,8 +186,6 @@ class ApiDataController extends AbstractController
 
             if (!in_array($groupName, $groups)) {
                 $groups[] = $groupName;
-
-                //echo "<pre>" . $groupName . PHP_EOL . "</pre>";
 
                 $group = new ClassGroup();
                 $group->setNumber($groupName);
