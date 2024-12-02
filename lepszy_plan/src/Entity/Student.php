@@ -4,8 +4,11 @@ namespace App\Entity;
 
 use App\Repository\StudentRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 #[ORM\Entity(repositoryClass: StudentRepository::class)]
+#[ORM\UniqueConstraint(name: 'student_index_unique', columns: ['index'])]
+#[UniqueEntity('index')]
 class Student
 {
     #[ORM\Id]

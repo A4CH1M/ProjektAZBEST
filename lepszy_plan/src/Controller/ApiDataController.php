@@ -3,7 +3,9 @@
 namespace App\Controller;
 
 use App\Entity\Department;
+use App\Entity\ClassGroup;
 use App\Entity\Room;
+use App\Entity\Subject;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Doctrine\ORM\EntityManagerInterface;
@@ -89,6 +91,85 @@ class ApiDataController extends AbstractController
                 $room->setNumber($roomNumber);
                 $room->setDepartment($department);
                 $this->entityManager->persist($room);
+            }
+        }
+
+        $this->entityManager->flush();
+
+        return new Response('Downloaded');
+    }
+
+    public function subjectDownloadAction(): Response
+    {
+        $url = 'https://plan.zut.edu.pl/schedule.php?kind=subject&query=';
+        $json = file_get_contents($url);
+
+        $data = json_decode($json, true);
+
+        if ($data === null) {
+            throw new \Exception("Błąd podczas dekodowania JSON.");
+        }
+
+        $subjects = [];
+        foreach ($data as $entry) {
+            $fullString = $entry['item'];
+
+            if (!isset($fullString)) {
+                continue;
+            }
+
+            $position = strpos($fullString, '(');
+            $sub = substr($fullString, 0, $position - 1);
+
+            if (!in_array($sub, $subjects)) {
+                $subjects[] = $sub;
+
+                # echo "<pre>" . $sub . PHP_EOL . "</pre>";
+
+                $subject = new Subject();
+                $subject->setName($sub);
+
+                $this->entityManager->persist($subject);
+            }
+        }
+
+        $this->entityManager->flush();
+
+        return new Response('Downloaded');
+    }
+
+    public function groupDownloadAction(): Response
+    {
+        $url = 'https://plan.zut.edu.pl/schedule.php?kind=group';
+        $json = file_get_contents($url);
+
+        //this is necessary trust us...
+        $kaboom = preg_split("/\\r\\n|\\r|\\n/", $json);
+        $json = end($kaboom);
+
+        $data = json_decode($json, true);
+
+        if ($data === null) {
+            throw new \Exception("Błąd podczas dekodowania JSON.");
+        }
+
+        $groups = [];
+        foreach ($data as $entry) {
+            $groupName = $entry['item'];
+
+            if (!isset($groupName)) {
+                continue;
+            }
+
+            if (!in_array($groupName, $groups)) {
+                $groups[] = $groupName;
+
+                //echo "<pre>" . $groupName . PHP_EOL . "</pre>";
+
+                $group = new ClassGroup();
+                $group->setNumber($groupName);
+
+                $this->entityManager->persist($group);
             }
         }
 

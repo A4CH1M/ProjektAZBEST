@@ -4,8 +4,12 @@ namespace App\Entity;
 
 use App\Repository\SubjectRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping\UniqueConstraint;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 #[ORM\Entity(repositoryClass: SubjectRepository::class)]
+#[UniqueConstraint(name: 'subject_name_unique', columns: ['name'])]
+#[UniqueEntity('name')]
 class Subject
 {
     #[ORM\Id]

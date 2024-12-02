@@ -7,6 +7,12 @@ teacherDownload:
 roomDownload:
     path: /room-download
     controller: App\Controller\ApiDataController::roomDownloadAction
+subjectDownload:
+    path: /subject-download
+    controller: App\Controller\ApiDataController::subjectDownloadAction
+groupDownload:
+    path: /group-download
+    controller: App\Controller\ApiDataController::groupDownloadAction
 controllers:
     resource:
         path: ../src/Controller/

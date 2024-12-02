@@ -4,9 +4,12 @@ namespace App\Entity;
 
 use App\Repository\GroupRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 #[ORM\Entity(repositoryClass: GroupRepository::class)]
-class Group
+#[ORM\UniqueConstraint(name: 'group_number_unique', columns: ['number'])]
+#[UniqueEntity('number')]
+class ClassGroup
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
