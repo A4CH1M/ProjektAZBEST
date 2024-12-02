@@ -16,6 +16,28 @@ class DepartmentRepository extends ServiceEntityRepository
         parent::__construct($registry, Department::class);
     }
 
+    public function findByName(string $name): ?object
+    {
+        // Znajdź jeden rekord na podstawie nazwy
+        return $this->findOneBy(['nazwa' => $name]);
+    }
+    public function saveToDb(string $name): ?bool
+    {
+        $department = $this->findByName($name);
+        if ($department){
+            return false;
+        }
+        else {
+            $department = new Department();
+            $department->setNazwa($name);
+
+            $entityManager = $this->getEntityManager();
+            $entityManager->persist($department);
+            $entityManager->flush();
+        }
+        return true;
+    }
+
     //    /**
     //     * @return Department[] Returns an array of Department objects
     //     */

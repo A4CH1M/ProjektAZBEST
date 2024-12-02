@@ -6,6 +6,7 @@ use App\Repository\ClassTypeRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: ClassTypeRepository::class)]
+#[ORM\Table(name: "typy_zajec")]
 class ClassType
 {
     #[ORM\Id]
@@ -14,7 +15,7 @@ class ClassType
     private ?int $id = null;
 
     #[ORM\Column(length: 100)]
-    private ?string $type = null;
+    private ?string $typ = null;
 
     public function getId(): ?int
     {
@@ -28,14 +29,14 @@ class ClassType
         return $this;
     }
 
-    public function getType(): ?string
+    public function getTyp(): ?string
     {
-        return $this->type;
+        return $this->typ;
     }
 
-    public function setType(string $type): static
+    public function setTyp(string $typ): static
     {
-        $this->type = $type;
+        $this->typ = $typ;
 
         return $this;
     }

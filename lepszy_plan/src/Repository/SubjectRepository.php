@@ -16,6 +16,28 @@ class SubjectRepository extends ServiceEntityRepository
         parent::__construct($registry, Subject::class);
     }
 
+    public function findByName(string $name): ?object
+    {
+        // Znajdź jeden rekord na podstawie nazwy
+        return $this->findOneBy(['nazwa' => $name]);
+    }
+    public function saveToDb(string $name): ?bool
+    {
+        $subject = $this->findByName($name);
+        if ($subject){
+            return false;
+        }
+        else {
+            $subject = new Subject();
+            $subject->setNazwa($name);
+
+            $entityManager = $this->getEntityManager();
+            $entityManager->persist($subject);
+            $entityManager->flush();
+        }
+        return true;
+    }
+
     //    /**
     //     * @return Subject[] Returns an array of Subject objects
     //     */

@@ -15,6 +15,27 @@ class StudentRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Student::class);
     }
+    public function findByName(string $name): ?object
+    {
+        // Znajdź jeden rekord na podstawie nazwy
+        return $this->findOneBy(['indeks' => $name]);
+    }
+    public function saveToDb(string $name): ?bool
+    {
+        $student = $this->findByName($name);
+        if ($student){
+            return false;
+        }
+        else {
+            $student = new Student();
+            $student->setIndeks($name);
+
+            $entityManager = $this->getEntityManager();
+            $entityManager->persist($student);
+            $entityManager->flush();
+        }
+        return true;
+    }
 
     //    /**
     //     * @return Student[] Returns an array of Student objects

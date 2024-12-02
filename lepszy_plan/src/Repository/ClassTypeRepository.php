@@ -16,6 +16,28 @@ class ClassTypeRepository extends ServiceEntityRepository
         parent::__construct($registry, ClassType::class);
     }
 
+    public function findByName(string $name): ?object
+    {
+        // Znajdź jeden rekord na podstawie nazwy
+        return $this->findOneBy(['typ' => $name]);
+    }
+    public function saveToDb(string $name): ?bool
+    {
+        $typ = $this->findByName($name);
+        if ($typ){
+            return false;
+        }
+        else {
+            $typ = new ClassType();
+            $typ->setTyp($name);
+
+            $entityManager = $this->getEntityManager();
+            $entityManager->persist($typ);
+            $entityManager->flush();
+        }
+        return true;
+    }
+
     //    /**
     //     * @return ClassType[] Returns an array of ClassType objects
     //     */

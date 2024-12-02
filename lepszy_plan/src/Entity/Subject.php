@@ -6,6 +6,7 @@ use App\Repository\SubjectRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: SubjectRepository::class)]
+#[ORM\Table(name: "przedmioty")]
 class Subject
 {
     #[ORM\Id]
@@ -14,7 +15,7 @@ class Subject
     private ?int $id = null;
 
     #[ORM\Column(length: 100)]
-    private ?string $name = null;
+    private ?string $nazwa = null;
 
     public function getId(): ?int
     {
@@ -28,14 +29,14 @@ class Subject
         return $this;
     }
 
-    public function getName(): ?string
+    public function getNazwa(): ?string
     {
-        return $this->name;
+        return $this->nazwa;
     }
 
-    public function setName(string $name): static
+    public function setNazwa(string $nazwa): static
     {
-        $this->name = $name;
+        $this->nazwa = $nazwa;
 
         return $this;
     }

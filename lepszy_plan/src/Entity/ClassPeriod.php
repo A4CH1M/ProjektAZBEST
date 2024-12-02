@@ -7,6 +7,7 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: ClassPeriodRepository::class)]
+#[ORM\Table(name: "bloki_zajec")]
 class ClassPeriod
 {
     #[ORM\Id]
@@ -35,10 +36,10 @@ class ClassPeriod
     private ?Subject $subject = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
-    private ?\DateTimeInterface $datetimeStart = null;
+    private ?\DateTimeInterface $data_rozpoczecia = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
-    private ?\DateTimeInterface $datetimeStop = null;
+    private ?\DateTimeInterface $data_zakonczenia = null;
 
     public function getId(): ?int
     {
@@ -112,26 +113,26 @@ class ClassPeriod
         return $this;
     }
 
-    public function getDatetimeStart(): ?\DateTimeInterface
+    public function getData_rozpoczecia(): ?\DateTimeInterface
     {
-        return $this->datetimeStart;
+        return $this->data_rozpoczecia;
     }
 
-    public function setDatetimeStart(\DateTimeInterface $datetimeStart): static
+    public function setData_rozpoczecia(\DateTimeInterface $data_rozpoczecia): static
     {
-        $this->datetimeStart = $datetimeStart;
+        $this->data_rozpoczecia = $data_rozpoczecia;
 
         return $this;
     }
 
-    public function getDatetimeStop(): ?\DateTimeInterface
+    public function getData_zakonczenia(): ?\DateTimeInterface
     {
-        return $this->datetimeStop;
+        return $this->data_zakonczenia;
     }
 
-    public function setDatetimeStop(\DateTimeInterface $datetimeStop): static
+    public function setData_zakonczenia(\DateTimeInterface $data_zakonczenia): static
     {
-        $this->datetimeStop = $datetimeStop;
+        $this->data_zakonczenia = $data_zakonczenia;
 
         return $this;
     }

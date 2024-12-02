@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
-    <data-source source="LOCAL" name="data" uuid="95a998bc-f569-4486-9b49-efe5164f58c5">
+    <data-source source="LOCAL" name="data" uuid="78ad96dc-8540-4f07-9384-52665b3b728d">
       <driver-ref>sqlite.xerial</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>org.sqlite.JDBC</jdbc-driver>
-      <jdbc-url>jdbc:sqlite:D:\ZUT\repos\ProjektAZBEST\lepszy_plan\var\data.db</jdbc-url>
+      <jdbc-url>jdbc:sqlite:C:\Users\artur\Programowanie\aplikacje_internetowe\projekt\lepszy_plan\var\data.db</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
       <libraries>
         <library>

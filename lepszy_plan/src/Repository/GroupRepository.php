@@ -16,6 +16,28 @@ class GroupRepository extends ServiceEntityRepository
         parent::__construct($registry, Group::class);
     }
 
+    public function findByName(string $name): ?object
+    {
+        // Znajdź jeden rekord na podstawie nazwy
+        return $this->findOneBy(['numer' => $name]);
+    }
+    public function saveToDb(string $name): ?bool
+    {
+        $group = $this->findByName($name);
+        if ($group){
+            return false;
+        }
+        else {
+            $group = new Group();
+            $group->setNumer($name);
+
+            $entityManager = $this->getEntityManager();
+            $entityManager->persist($group);
+            $entityManager->flush();
+        }
+        return true;
+    }
+
     //    /**
     //     * @return Group[] Returns an array of Group objects
     //     */

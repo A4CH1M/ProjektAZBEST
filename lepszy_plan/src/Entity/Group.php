@@ -6,6 +6,7 @@ use App\Repository\GroupRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: GroupRepository::class)]
+#[ORM\Table(name: "grupy")]
 class Group
 {
     #[ORM\Id]
@@ -14,7 +15,7 @@ class Group
     private ?int $id = null;
 
     #[ORM\Column(length: 100)]
-    private ?string $number = null;
+    private ?string $numer = null;
 
     public function getId(): ?int
     {
@@ -28,14 +29,14 @@ class Group
         return $this;
     }
 
-    public function getNumber(): ?string
+    public function getNumer(): ?string
     {
-        return $this->number;
+        return $this->numer;
     }
 
-    public function setNumber(string $number): static
+    public function setNumer(string $numer): static
     {
-        $this->number = $number;
+        $this->numer = $numer;
 
         return $this;
     }

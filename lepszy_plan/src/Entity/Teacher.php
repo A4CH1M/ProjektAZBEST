@@ -6,6 +6,7 @@ use App\Repository\TeacherRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: TeacherRepository::class)]
+#[ORM\Table(name: "prowadzacy")]
 class Teacher
 {
     #[ORM\Id]
@@ -14,7 +15,7 @@ class Teacher
     private ?int $id = null;
 
     #[ORM\Column(length: 100)]
-    private ?string $fullName = null;
+    private ?string $imienazwisko = null;
 
     public function getId(): ?int
     {
@@ -28,14 +29,14 @@ class Teacher
         return $this;
     }
 
-    public function getFullName(): ?string
+    public function getImienazwisko(): ?string
     {
-        return $this->fullName;
+        return $this->imienazwisko;
     }
 
-    public function setFullName(string $fullName): static
+    public function setImienazwisko(string $imienazwisko): static
     {
-        $this->fullName = $fullName;
+        $this->imienazwisko = $imienazwisko;
 
         return $this;
     }

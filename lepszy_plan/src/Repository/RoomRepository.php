@@ -15,7 +15,29 @@ class RoomRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Room::class);
     }
+    public function findByName(string $name): ?object
+    {
+        // Znajdź jeden rekord na podstawie nazwy
+        return $this->findOneBy(['numer' => $name]);
+    }
+    public function saveToDb(int $wydzial_id, string $name): ?bool
+    {
+        $object = $this->findByName($name);
+        if ($object){
+            return false;
+        }
+        else {
+            $entityManager = $this->getEntityManager();
+            $object = new Room();
+            $department = $entityManager->getRepository('App:Department')->find($wydzial_id);
+            $object->setDepartment($department);
+            $object->setNumer($name);
 
+            $entityManager->persist($object);
+            $entityManager->flush();
+        }
+        return true;
+    }
     //    /**
     //     * @return Room[] Returns an array of Room objects
     //     */

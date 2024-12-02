@@ -6,6 +6,7 @@ use App\Repository\RoomRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: RoomRepository::class)]
+#[ORM\Table(name: "sale")]
 class Room
 {
     #[ORM\Id]
@@ -14,7 +15,7 @@ class Room
     private ?int $id = null;
 
     #[ORM\Column(length: 100)]
-    private ?string $number = null;
+    private ?string $numer = null;
 
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(nullable: false)]
@@ -32,14 +33,14 @@ class Room
         return $this;
     }
 
-    public function getNumber(): ?string
+    public function getNumer(): ?string
     {
-        return $this->number;
+        return $this->numer;
     }
 
-    public function setNumber(string $number): static
+    public function setNumer(string $numer): static
     {
-        $this->number = $number;
+        $this->numer = $numer;
 
         return $this;
     }

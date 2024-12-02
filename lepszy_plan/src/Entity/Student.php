@@ -6,6 +6,7 @@ use App\Repository\StudentRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: StudentRepository::class)]
+#[ORM\Table(name: "studenci")]
 class Student
 {
     #[ORM\Id]
@@ -14,21 +15,21 @@ class Student
     private ?int $id = null;
 
     #[ORM\Column]
-    private ?int $index = null;
+    private ?int $indeks = null;
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getIndex(): ?int
+    public function getIndeks(): ?int
     {
-        return $this->index;
+        return $this->indeks;
     }
 
-    public function setIndex(int $index): static
+    public function setIndeks(int $indeks): static
     {
-        $this->index = $index;
+        $this->indeks = $indeks;
 
         return $this;
     }
