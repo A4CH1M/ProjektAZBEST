@@ -1,0 +1,122 @@
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 80px;
+    height: 34px;
+}
+
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    transition: 0.4s;
+    border-radius: 34px;
+    display: flex;
+    align-items: center;
+    padding: 0 10px;
+    box-sizing: border-box;
+}
+
+.slider::before {
+    position: absolute;
+    content: "";
+    height: 26px;
+    width: 26px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    transition: 0.4s;
+    border-radius: 50%;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.slider-text {
+    font-size: 12px;
+    font-weight: bold;
+    color: white;
+    position: absolute;
+    transition: opacity 0.4s, transform 0.4s;
+}
+
+.and-text {
+    right: 10px;
+    color: black;
+}
+
+.or-text {
+    left: 10px;
+    opacity: 0;
+}
+
+input:checked + .slider {
+    background-color: #007bff;
+}
+
+input:checked + .slider::before {
+    transform: translateX(46px);
+}
+
+input:checked + .slider .and-text {
+    opacity: 0;
+}
+
+input:checked + .slider .or-text {
+    opacity: 1;
+}
+
+.dark-mode-switch {
+    display: inline-block;
+    width: 60px;
+    height: 30px;
+}
+
+.dark-mode-switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.dark-theme-slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #333;
+    transition: 0.4s;
+    border-radius: 30px;
+}
+
+.dark-theme-slider::before {
+    position: absolute;
+    content: "";
+    height: 22px;
+    width: 22px;
+    left: 4px;
+    bottom: 4px;
+    background-color: #f1f1f1;
+    transition: 0.4s;
+    border-radius: 50%;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.dark-mode-switch input:checked + .dark-theme-slider {
+    background-color: #ccc;
+}
+
+.dark-mode-switch input:checked + .dark-theme-slider::before {
+    transform: translateX(30px);
+    background-color: white;
+}
+
