@@ -3,6 +3,8 @@
 namespace App\Service;
 
 use App\Entity\ClassGroup;
+use App\Entity\ClassPeriod;
+use App\Entity\ClassType;
 use App\Entity\Department;
 use App\Entity\GroupStudent;
 use App\Entity\Room;
@@ -11,6 +13,7 @@ use App\Entity\Subject;
 use App\Entity\Teacher;
 use App\Repository\ClassGroupRepository;
 use App\Repository\RoomRepository;
+use App\Repository\SubjectRepository;
 use App\Repository\TeacherRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpClient\Response\MockResponse;
@@ -24,18 +27,21 @@ class ApiDataManager
     private readonly TeacherRepository $teacherRepository;
     private readonly RoomRepository $roomRepository;
     private readonly ClassGroupRepository $classGroupRepository;
+    private readonly SubjectRepository $subjectRepository;
 
     public function __construct(
         EntityManagerInterface $entityManager,
         TeacherRepository $teacherRepository,
         RoomRepository $roomRepository,
-        ClassGroupRepository $classGroupRepository
+        ClassGroupRepository $classGroupRepository,
+        SubjectRepository $subjectRepository
     )
     {
         $this->entityManager = $entityManager;
         $this->teacherRepository = $teacherRepository;
         $this->roomRepository = $roomRepository;
         $this->classGroupRepository = $classGroupRepository;
+        $this->subjectRepository = $subjectRepository;
     }
 
 
@@ -208,6 +214,10 @@ class ApiDataManager
         ini_set("memory_limit", "-1");
         set_time_limit(3600);
 
+        $classTypes = [];
+        $classPeriods = [];
+        $newGroups = [];
+
         for ($i = 51000; $i < 51050; $i++) {
             $url = 'https://plan.zut.edu.pl/schedule_student.php?number=' . $i . '&start=2024-12-02T00%3A00%3A00%2B01%3A00&end=2024-12-09T00%3A00%3A00%2B01%3A00';
             $json = file_get_contents($url);
@@ -218,9 +228,7 @@ class ApiDataManager
             }
 
             $parts = explode(',', $json, 2);
-
             $json = '[' . $parts[1];
-
             $data = json_decode($json, true);
 
             if ($data === null) {
@@ -238,24 +246,85 @@ class ApiDataManager
             $groups = [];
             foreach ($data as $entry) {
                 $groupNumber = $entry['group_name'];
+                $group = null;
+
                 if (!in_array($groupNumber, $groups)) {
                     $groups[] = $groupNumber;
                     $group = $this->classGroupRepository->findOneBy(['number' => $groupNumber]);
 
-                    if ($group) {
-                        $groupStudent = new GroupStudent();
-                        $groupStudent->setGroup($group);
-                        $groupStudent->setStudent($student);
-                        $this->entityManager->persist($groupStudent);
+                    if (!$group) {
+                        $group = new ClassGroup();
+                        $group->setNumber($groupNumber);
+                        $newGroups[$groupNumber] = $group;
+                        $this->entityManager->persist($group);
                     }
-                    else {
-                        echo $groupNumber . PHP_EOL; //AAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+
+                    $groupStudent = new GroupStudent();
+                    $groupStudent->setStudent($student);
+                    $groupStudent->setGroup($group);
+                    $this->entityManager->persist($groupStudent);
+                }
+
+                $classTypeName = $entry['lesson_form'];
+                $classType = null;
+                if (!array_key_exists($classTypeName, $classTypes)) {
+                    //add check if already in db
+                    $classType = new ClassType();
+                    $classType->setType($classTypeName);
+                    $classTypes[$classTypeName] = $classType;
+                    $this->entityManager->persist($classType);
+                }
+
+                $classPeriod = new ClassPeriod();
+
+                if (!$group) {
+                    $group = $this->classGroupRepository->findOneBy(['number' => $groupNumber]);
+                    if (!$group) {
+                        $group = $newGroups[$groupNumber];
                     }
                 }
-            }
-        }
+                $classPeriod->setgroup($group);
 
-        $this->entityManager->flush();
+                if(!$classType){
+                    $classType = $classTypes[$classTypeName];
+                }
+                $classPeriod->setClassType($classType);
+
+                $teacherName = $entry['worker'];
+                $teacher = $this->teacherRepository->findOneBy(['fullName' => $teacherName]);
+                $classPeriod->setTeacher($teacher);
+
+                if (str_contains($entry['room'], ' ')) {
+                    $roomName = explode(' ', $entry['room'], 2)[1];
+                }
+                else {
+                    $roomName = explode('_', $entry['room'], 2)[1];
+                }
+                $room = $this->roomRepository->findOneBy(['number' => $roomName]);
+                $classPeriod->setRoom($room);
+
+                $subjectName = mb_convert_case($entry['subject'], MB_CASE_TITLE, "UTF-8");
+                $subject = $this->subjectRepository->findOneBy(['name' => $subjectName]);
+                if (!$subject) {
+                    echo "'".$subjectName."'" . PHP_EOL;
+                }
+                $classPeriod->setSubject($subject);
+
+                $dateStart = new \DateTime($entry['start']);
+                $classPeriod->setDatetimeStart($dateStart);
+                $dateEnd = new \DateTime($entry['end']);
+                $classPeriod->setDatetimeStop($dateEnd);
+
+                $classKey = $teacherName . $dateStart->format('Y m d H i s') . $dateEnd->format('Y m d H i s');
+
+                if(!array_key_exists($classKey, $classPeriods)) {
+                    $classPeriods[$classKey] = $classPeriod;
+                    $this->entityManager->persist($classPeriod);
+                }
+            }
+
+            $this->entityManager->flush();
+        }
 
         return new Response('Downloaded');
     }
