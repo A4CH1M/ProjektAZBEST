@@ -4,8 +4,11 @@ namespace App\Entity;
 
 use App\Repository\RoomRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 #[ORM\Entity(repositoryClass: RoomRepository::class)]
+#[ORM\UniqueConstraint(name: 'room_number_unique', columns: ['number'])]
+#[UniqueEntity('number')]
 class Room
 {
     #[ORM\Id]

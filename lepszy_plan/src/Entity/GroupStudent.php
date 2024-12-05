@@ -15,7 +15,7 @@ class GroupStudent
 
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(nullable: false)]
-    private ?Group $group = null;
+    private ?ClassGroup $group = null;
 
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(nullable: false)]
@@ -26,12 +26,12 @@ class GroupStudent
         return $this->id;
     }
 
-    public function getGroup(): ?Group
+    public function getGroup(): ?ClassGroup
     {
         return $this->group;
     }
 
-    public function setGroup(?Group $group): static
+    public function setGroup(?ClassGroup $group): static
     {
         $this->group = $group;
 

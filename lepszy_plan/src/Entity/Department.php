@@ -4,8 +4,11 @@ namespace App\Entity;
 
 use App\Repository\DepartmentRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 #[ORM\Entity(repositoryClass: DepartmentRepository::class)]
+#[ORM\UniqueConstraint(name: 'department_name_unique', columns: ['name'])]
+#[UniqueEntity('name')]
 class Department
 {
     #[ORM\Id]

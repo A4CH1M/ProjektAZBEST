@@ -4,8 +4,11 @@ namespace App\Entity;
 
 use App\Repository\StudentRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 #[ORM\Entity(repositoryClass: StudentRepository::class)]
+#[ORM\UniqueConstraint(name: 'student_student_index_unique', columns: ['student_index'])]
+#[UniqueEntity('student_index')]
 class Student
 {
     #[ORM\Id]
@@ -14,21 +17,21 @@ class Student
     private ?int $id = null;
 
     #[ORM\Column]
-    private ?int $index = null;
+    private ?int $studentIndex = null;
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getIndex(): ?int
+    public function getStudentIndex(): ?int
     {
-        return $this->index;
+        return $this->studentIndex;
     }
 
-    public function setIndex(int $index): static
+    public function setStudentIndex(int $studentIndex): static
     {
-        $this->index = $index;
+        $this->studentIndex = $studentIndex;
 
         return $this;
     }

@@ -4,8 +4,11 @@ namespace App\Entity;
 
 use App\Repository\ClassTypeRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 #[ORM\Entity(repositoryClass: ClassTypeRepository::class)]
+#[ORM\UniqueConstraint(name: 'class_type_type_unique', columns: ['type'])]
+#[UniqueEntity('type')]
 class ClassType
 {
     #[ORM\Id]
