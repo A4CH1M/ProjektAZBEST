@@ -16,6 +16,7 @@ use App\Repository\RoomRepository;
 use App\Repository\SubjectRepository;
 use App\Repository\TeacherRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use mysql_xdevapi\Exception;
 use Symfony\Component\HttpClient\Response\MockResponse;
 use Symfony\Component\HttpFoundation\Response;
 use function PHPUnit\Framework\assertArrayHasKey;
@@ -72,7 +73,7 @@ class ApiDataManager
 
         $this->entityManager->flush();
 
-        return new Response('Downloaded');
+        return new Response('Downloaded Teachers');
     }
 
     public function roomDownload(): Response
@@ -127,7 +128,7 @@ class ApiDataManager
 
         $this->entityManager->flush();
 
-        return new Response('Downloaded');
+        return new Response('Downloaded Rooms and Departments');
     }
 
     public function subjectDownload(): Response
@@ -166,7 +167,7 @@ class ApiDataManager
 
         $this->entityManager->flush();
 
-        return new Response('Downloaded');
+        return new Response('Downloaded Subjects');
     }
 
     public function groupDownload(): Response
@@ -206,7 +207,7 @@ class ApiDataManager
 
         $this->entityManager->flush();
 
-        return new Response('Downloaded');
+        return new Response('Downloaded Groups (not all)');
     }
 
     public function classPeriodDownload(): Response
@@ -223,7 +224,6 @@ class ApiDataManager
             $json = file_get_contents($url);
 
             if(!str_contains($json, ',')) {
-                echo $i . PHP_EOL;
                 continue;
             }
 
@@ -326,6 +326,25 @@ class ApiDataManager
             $this->entityManager->flush();
         }
 
-        return new Response('Downloaded');
+        return new Response('Downloaded Students, Class Types, Class Periods and remaining groups');
+    }
+
+    public function apiDataDownload(): Response
+    {
+        try{
+            echo $this->teacherDownload() . PHP_EOL;
+            echo $this->roomDownload() . PHP_EOL;
+            echo $this->subjectDownload() . PHP_EOL;
+            echo $this->groupDownload() . PHP_EOL;
+            echo $this->classPeriodDownload() . PHP_EOL;
+            return new Response('Data downloaded');
+        }
+        catch (\Exception $e)
+        {
+            echo $e->getMessage() . PHP_EOL;
+            return new Response('Error: ' . $e->getMessage());
+        }
+
+
     }
 }
