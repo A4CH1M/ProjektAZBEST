@@ -4,8 +4,12 @@ namespace App\Entity;
 
 use App\Repository\TeacherRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping\UniqueConstraint;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 #[ORM\Entity(repositoryClass: TeacherRepository::class)]
+#[UniqueConstraint(name: 'teacher_full_name_unique', columns: ['full_name'])]
+#[UniqueEntity('full_name')]
 class Teacher
 {
     #[ORM\Id]
