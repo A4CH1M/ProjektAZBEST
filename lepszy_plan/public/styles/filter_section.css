@@ -4,14 +4,13 @@
     width: 20%;
     padding: 20px;
     margin-left: 20px;
-    background-color: #f1f1f1;
 }
 
 #filters {
     display: flex;
     flex-direction: column;
     gap: 15px;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
 }
 
 .filter {
@@ -29,7 +28,7 @@
 .filter input {
     padding: 8px;
     font-size: 14px;
-    border: 1px solid #ccc;
+    border: 1px solid #000000;
     border-radius: 5px;
     width: 100%;
     box-sizing: border-box;
@@ -54,14 +53,14 @@
 }
 
 .filter-logic-switch {
-    padding-bottom: 20px;
+    padding-bottom: 5px;
 }
 
 button {
     padding: 10px;
     font-size: 14px;
     border: none;
-    background-color: #007bff;
+    background-color: #1566CE;
     color: white;
     cursor: pointer;
     border-radius: 5px;
@@ -70,4 +69,30 @@ button {
 
 button:hover {
     background-color: #0056b3;
+}
+
+body.dark-mode button {
+    background-color: #333;
+    color: white;
+}
+
+body.dark-mode .filter input{
+    background-color: #756E6E;
+    border-color: #756E6E;
+    color: white;
+}
+
+body.dark-mode .filter input::placeholder{
+    color: #373434;
+}
+
+body.dark-mode .filter label {
+    color: white;
+}
+
+body.dark-mode button:hover{
+    background-color: #232323;
+}
+body.dark-mode {
+    background-color: #121212;
 }

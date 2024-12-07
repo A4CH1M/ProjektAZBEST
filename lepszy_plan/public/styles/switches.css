@@ -1,8 +1,11 @@
 .switch {
     position: relative;
-    display: inline-block;
     width: 80px;
     height: 34px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 10px;
 }
 
 .switch input {
@@ -23,8 +26,8 @@
     border-radius: 34px;
     display: flex;
     align-items: center;
-    padding: 0 10px;
     box-sizing: border-box;
+    transform: translateY(8px);
 }
 
 .slider::before {
@@ -59,7 +62,7 @@
 }
 
 input:checked + .slider {
-    background-color: #007bff;
+    background-color: #1566CE;
 }
 
 input:checked + .slider::before {
@@ -120,3 +123,20 @@ input:checked + .slider .or-text {
     background-color: white;
 }
 
+body.dark-mode .or-text {
+    color: white;
+}
+
+body.dark-mode input:checked + .slider {
+    background-color: #333;
+}
+.slider-label {
+    font-size: 14px;
+    font-weight: bold;
+    color: #333;
+    text-align: center;
+}
+
+body.dark-mode .slider-label {
+    color: white; /* Zmieniony kolor etykiety w ciemnym trybie */
+}
