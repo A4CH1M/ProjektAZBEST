@@ -16,6 +16,27 @@ class TeacherRepository extends ServiceEntityRepository
         parent::__construct($registry, Teacher::class);
     }
 
+    public function findByName(string $name): array
+    {
+        return $this->createQueryBuilder('t')
+            ->where('t.fullName LIKE :name')
+            ->setParameter('name', '%' . $name . '%')
+            ->getQuery()
+            ->getResult();
+    }
+
+    // Metoda do pobierania samych nazw `full_name`
+//    public function findAllFullNames(): array
+//    {
+//        $queryBuilder = $this->createQueryBuilder('t')
+//            ->select('t.fullName');
+//
+//        return array_map(
+//            fn ($result) => $result['fullName'],
+//            $queryBuilder->getQuery()->getArrayResult()
+//        );
+//    }
+
     //    /**
     //     * @return Teacher[] Returns an array of Teacher objects
     //     */
