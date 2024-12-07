@@ -72,6 +72,8 @@ class ApiDataManager
         ini_set("memory_limit", "-1");
         set_time_limit(3600);
 
+        $this->entityManager->createQuery('DELETE FROM App\Entity\Teacher')->execute();
+
         $url = 'https://plan.zut.edu.pl/schedule.php?kind=teacher&query=';
         $json = file_get_contents($url);
 
@@ -104,6 +106,9 @@ class ApiDataManager
     {
         ini_set("memory_limit", "-1");
         set_time_limit(3600);
+
+        $this->entityManager->createQuery('DELETE FROM App\Entity\Room')->execute();
+        $this->entityManager->createQuery('DELETE FROM App\Entity\Department')->execute();
 
         $url = 'https://plan.zut.edu.pl/schedule.php?kind=room&query=';
         $json = file_get_contents($url);
@@ -166,6 +171,8 @@ class ApiDataManager
         ini_set("memory_limit", "-1");
         set_time_limit(3600);
 
+        $this->entityManager->createQuery('DELETE FROM App\Entity\Subject')->execute();
+
         $url = 'https://plan.zut.edu.pl/schedule.php?kind=subject&query=';
         $json = file_get_contents($url);
 
@@ -208,6 +215,8 @@ class ApiDataManager
         ini_set("memory_limit", "-1");
         set_time_limit(3600);
 
+        $this->entityManager->createQuery('DELETE FROM App\Entity\ClassGroup')->execute();
+        
         $url = 'https://plan.zut.edu.pl/schedule.php?kind=group';
         $json = file_get_contents($url);
 
@@ -250,6 +259,11 @@ class ApiDataManager
     {
         ini_set("memory_limit", "-1");
         set_time_limit(3600);
+
+        $this->entityManager->createQuery('DELETE FROM App\Entity\ClassPeriod')->execute();
+        $this->entityManager->createQuery('DELETE FROM App\Entity\GroupStudent')->execute();
+        $this->entityManager->createQuery('DELETE FROM App\Entity\Student')->execute();
+        $this->entityManager->createQuery('DELETE FROM App\Entity\ClassType')->execute();
 
         $classTypes = [];
         $classPeriods = [];
@@ -403,7 +417,5 @@ class ApiDataManager
             echo $e->getMessage() . PHP_EOL;
             return new Response('Error: ' . $e->getMessage());
         }
-
-
     }
 }
