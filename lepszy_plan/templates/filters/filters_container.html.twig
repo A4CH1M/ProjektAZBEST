@@ -3,11 +3,11 @@
         {% set filters = [
             { id: 'filter_teacher', label: 'Wykładowca', name: 'filter_teacher', placeholder: 'Podaj wykładowcę' },
             { id: 'filter_student', label: 'Nr albumu', name: 'filter_student', placeholder: 'Podaj numer albumu' },
-            { id: 'filter_course', label: 'Przedmiot', name: 'filter_course', placeholder: 'Podaj przedmiot' },
-            { id: 'filter_faculty', label: 'Wydział', name: 'filter_faculty', placeholder: 'Podaj wydział' },
+            { id: 'filter_subject', label: 'Przedmiot', name: 'filter_course', placeholder: 'Podaj przedmiot' },
+            { id: 'filter_department', label: 'Wydział', name: 'filter_faculty', placeholder: 'Podaj wydział' },
             { id: 'filter_room', label: 'Sala', name: 'filter_room', placeholder: 'Podaj salę' },
-            { id: 'filter_grup', label: 'Grupa', name: 'filter_group', placeholder: 'Podaj grupę' },
-            { id: 'filter_form', label: 'Forma zajęć', name: 'filter_form', placeholder: 'Podaj formę zajęć' }
+            { id: 'filter_group', label: 'Grupa', name: 'filter_group', placeholder: 'Podaj grupę' },
+            { id: 'filter_type', label: 'Forma zajęć', name: 'filter_form', placeholder: 'Podaj formę zajęć' }
         ] %}
         {% for filter in filters %}
             {% include 'filters/filter_field.html.twig' with filter %}

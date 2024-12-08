@@ -16,7 +16,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const subjectFilter = document.getElementById("filter_course");
     const classTypeFilter = document.getElementById("filter_form");
 
-    searchButton.addEventListener("click", async() => {
+    searchButton.addEventListener("click", async () => {
         try {
             const teacherName = teacherFilter ? teacherFilter.value : '';
             const studentIndex = studentFilter ? studentFilter.value : '';
@@ -26,9 +26,9 @@ document.addEventListener("DOMContentLoaded", () => {
             const subjectName = subjectFilter ? subjectFilter.value : '';
             const classTypeName = classTypeFilter ? classTypeFilter.value : '';
 
-            if(teacherName === '' && studentIndex === '' && groupNumber === ''
-            && roomNumber === '' && departmentName === '' && subjectName === ''
-             && classTypeName === '') {
+            if (teacherName === '' && studentIndex === '' && groupNumber === ''
+                && roomNumber === '' && departmentName === '' && subjectName === ''
+                && classTypeName === '') {
                 return;
             }
 
@@ -48,7 +48,7 @@ document.addEventListener("DOMContentLoaded", () => {
             if (classTypeName !== '')
                 url += `class_type=${encodeURIComponent(classTypeName)}`;
 
-            if(url[-1] === '&')
+            if (url[-1] === '&')
                 url = url.slice(0, -1);
 
             const response = await fetch(url);
@@ -64,7 +64,7 @@ document.addEventListener("DOMContentLoaded", () => {
         } catch (error) {
             console.error('Wystąpił błąd:', error);
         }
-
+    });
     const darkModeSwitch = document.getElementById('dark-mode-switch');
 
     darkModeSwitch.addEventListener('change', function () {
@@ -72,3 +72,4 @@ document.addEventListener("DOMContentLoaded", () => {
 
     });
 });
+
