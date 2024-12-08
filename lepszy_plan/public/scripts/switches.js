@@ -64,5 +64,11 @@ document.addEventListener("DOMContentLoaded", () => {
         } catch (error) {
             console.error('Wystąpił błąd:', error);
         }
+
+    const darkModeSwitch = document.getElementById('dark-mode-switch');
+
+    darkModeSwitch.addEventListener('change', function () {
+        document.body.classList.toggle('dark-mode', this.checked);
+
     });
 });
