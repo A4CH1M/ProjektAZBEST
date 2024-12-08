@@ -5,16 +5,17 @@
 
 #calendar {
     flex-grow: 1;
-    background-color: #333;
+    background-color: #FFFFFF;
     padding: 20px;
     margin-left: 40px;
     margin-right: 20px;
+
 }
 
 #calendar table {
     width: 100%;
     border-collapse: collapse;
-    color: white;
+    color: black;
 }
 
 #calendar th, #calendar td {
