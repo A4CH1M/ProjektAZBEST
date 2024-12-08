@@ -53,8 +53,8 @@ class ClassPeriodController extends AbstractController
                     ->setParameter('room', $room);
             }
             if ($subject) {
-                $qb->join('cp.subject', 'sub')
-                    ->andWhere('sub.name = :subject')
+                $qb->join('cp.subject', 'subj')
+                    ->andWhere('subj.name = :subject')
                     ->setParameter('subject', $subject);
             }
             if ($classType) {
