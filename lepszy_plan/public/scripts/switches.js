@@ -28,8 +28,13 @@ document.addEventListener("DOMContentLoaded", () => {
             const classTypeName = classTypeFilter ? classTypeFilter.value : '';
             
             //dodaj if'a: jeśli wszystkie są puste, nic nie wysyłaj
+            if(teacherName === '' && studentIndex === '' && groupNumber === ''
+            && roomNumber === '' && departmentName === '' && subjectName === ''
+             && classTypeName === '') {
+                return;
+            }
 
-            url = '/api/classPeroid?';
+            url = '/api/classPeriod?';
             if (teacherName !== '')
                 url += `teacher=${encodeURIComponent(teacherName)}&`;
             if (studentIndex !== '')
@@ -43,7 +48,7 @@ document.addEventListener("DOMContentLoaded", () => {
             if (subjectName !== '')
                 url += `subject=${encodeURIComponent(subjectName)}&`;
             if (classTypeName !== '')
-                url += `class_type=${encodeURIComponent(classTypeName)}`;
+                url += `class_type=${encodeURIComponent(classTypeName)}&`;
 
             if(url[-1] === '&')
                 url = url.slice(0, -1);
@@ -53,8 +58,10 @@ document.addEventListener("DOMContentLoaded", () => {
             if (!response.ok) {
                 throw new Error('Błąd podczas pobierania danych');
             }
+            const subjects = await response.json();
             
-            console.log(response);
+            //console.log(response);
+            console.log(subjects);
             // narazie tyle wystarczy, w tym miejscu powinno dać json'a z blokami zajęć dla podanych filtrów
             // skup się na samej logice filtrowania
         } catch (error) {

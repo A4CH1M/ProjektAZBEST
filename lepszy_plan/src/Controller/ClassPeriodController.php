@@ -10,7 +10,7 @@ use Symfony\Component\HttpFoundation\Request;
 
 class ClassPeriodController extends AbstractController
 {
-    #[Route('/api/class-period', name: 'api_classPeriod', methods: ['GET'])]
+    #[Route('/api/classPeriod', name: 'api_classPeriod', methods: ['GET'])]
     public function getClassPeriods(Request $request, ClassPeriodRepository $classPeriodRepository): JsonResponse
     {
         $student = $request->query->get('student'); // dodatkowa operacja do wyciągnięcia grup studentów
@@ -20,16 +20,51 @@ class ClassPeriodController extends AbstractController
         $teacher = $request->query->get('teacher');
         $classType = $request->query->get('class_type');
 
-        if (/*przynajmniej jeden filtr został przekazany*/false) {
-            // dowiedzieć się jak można użyć tego co napisałem niżej, bez konieczności wszystkich filtrów
-            // nie rób błagam funkcji w repozytoriach, jeśli istnieją domyślne, które robią to samo
-            $classPeriods = $classPeriodRepository->findAllBy(([
-                                'group' => $group,
-                                'room' => $room,
-                                'subject' => $subject,
-                                'teacher' => $teacher,
-                                'classType' => $classType
-                            ]));
+        $classPeriods = [];
+        if ($student || $group || $room || $subject || $teacher || $classType) {
+            $qb = $classPeriodRepository->createQueryBuilder('cp'); // 'cp' to alias dla ClassPeriod
+
+            if ($student) {
+                $qb->join('cp.subject', 'sub')
+                    ->join('App\Entity\GroupStudent', 'gs', 'WITH', 'gs.group = cp.group')
+                    ->join('App\Entity\Student', 's', 'WITH', 's.id = gs.student')
+                    ->where('s.studentIndex = :studentIndex') // Filtrujemy po ID studenta
+                    ->setParameter('studentIndex', $student);
+            }
+
+            // Dodanie warunków dynamicznie
+            if ($teacher) {
+                $qb->join('cp.teacher', 't')
+                    ->andWhere('t.fullName = :teacher')
+                    ->setParameter('teacher', $teacher);
+            }
+
+            //do sprawdzenia w konsoli jak ukladane jest zapytanie
+            //return new JsonResponse(['dql' => $qb->getDQL()]);
+
+            if ($group) {
+                $qb->join('cp.group', 'g')
+                    ->andWhere('g.number = :group')
+                    ->setParameter('group', $group);
+            }
+            if ($room) {
+                $qb->join('cp.room', 'r')
+                    ->andWhere('r.number = :room')
+                    ->setParameter('room', $room);
+            }
+            if ($subject) {
+                $qb->join('cp.subject', 'sub')
+                    ->andWhere('sub.name = :subject')
+                    ->setParameter('subject', $subject);
+            }
+            if ($classType) {
+                $qb->join('cp.classType', 'ct')
+                    ->andWhere('ct.type = :classType')
+                    ->setParameter('classType', $classType);
+            }
+
+            // Pobranie wyników
+            $classPeriods = $qb->getQuery()->getResult();
         }
 
         $details = array_map(fn($classPeriod) => [
