@@ -10,10 +10,10 @@ use Symfony\Component\HttpFoundation\Request;
 
 class ClassPeriodController extends AbstractController
 {
-    #[Route('/api/classPeriod', name: 'api_classPeriod', methods: ['GET'])]
+    #[Route('/api/class-period', name: 'api_classPeriod', methods: ['GET'])]
     public function getClassPeriods(Request $request, ClassPeriodRepository $classPeriodRepository): JsonResponse
     {
-        $student = $request->query->get('student'); // dodatkowa operacja do wyciągnięcia grup studentów
+        $student = $request->query->get('student');
         $group = $request->query->get('group');
         $room = $request->query->get('room');
         $subject = $request->query->get('subject');
@@ -28,19 +28,18 @@ class ClassPeriodController extends AbstractController
                 $qb->join('cp.subject', 'sub')
                     ->join('App\Entity\GroupStudent', 'gs', 'WITH', 'gs.group = cp.group')
                     ->join('App\Entity\Student', 's', 'WITH', 's.id = gs.student')
-                    ->where('s.studentIndex = :studentIndex') // Filtrujemy po ID studenta
+                    ->where('s.studentIndex = :studentIndex')
                     ->setParameter('studentIndex', $student);
             }
 
-            // Dodanie warunków dynamicznie
             if ($teacher) {
                 $qb->join('cp.teacher', 't')
                     ->andWhere('t.fullName = :teacher')
                     ->setParameter('teacher', $teacher);
             }
 
-            //do sprawdzenia w konsoli jak ukladane jest zapytanie
-            //return new JsonResponse(['dql' => $qb->getDQL()]);
+            // do sprawdzenia w konsoli jak ukladane jest zapytanie
+            // return new JsonResponse(['dql' => $qb->getDQL()]);
 
             if ($group) {
                 $qb->join('cp.group', 'g')
@@ -63,7 +62,6 @@ class ClassPeriodController extends AbstractController
                     ->setParameter('classType', $classType);
             }
 
-            // Pobranie wyników
             $classPeriods = $qb->getQuery()->getResult();
         }
 

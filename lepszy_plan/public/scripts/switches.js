@@ -17,7 +17,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const classTypeFilter = document.getElementById("filter_form");
 
     searchButton.addEventListener("click", async() => {
-        console.log("Przycisk 'Wyszukaj' został kliknięty.");
         try {
             const teacherName = teacherFilter ? teacherFilter.value : '';
             const studentIndex = studentFilter ? studentFilter.value : '';
@@ -26,15 +25,14 @@ document.addEventListener("DOMContentLoaded", () => {
             const departmentName = departmentFilter ? departmentFilter.value : '';
             const subjectName = subjectFilter ? subjectFilter.value : '';
             const classTypeName = classTypeFilter ? classTypeFilter.value : '';
-            
-            //dodaj if'a: jeśli wszystkie są puste, nic nie wysyłaj
+
             if(teacherName === '' && studentIndex === '' && groupNumber === ''
             && roomNumber === '' && departmentName === '' && subjectName === ''
              && classTypeName === '') {
                 return;
             }
 
-            url = '/api/classPeriod?';
+            let url = '/api/class-period?';
             if (teacherName !== '')
                 url += `teacher=${encodeURIComponent(teacherName)}&`;
             if (studentIndex !== '')
@@ -48,7 +46,7 @@ document.addEventListener("DOMContentLoaded", () => {
             if (subjectName !== '')
                 url += `subject=${encodeURIComponent(subjectName)}&`;
             if (classTypeName !== '')
-                url += `class_type=${encodeURIComponent(classTypeName)}&`;
+                url += `class_type=${encodeURIComponent(classTypeName)}`;
 
             if(url[-1] === '&')
                 url = url.slice(0, -1);
@@ -58,12 +56,11 @@ document.addEventListener("DOMContentLoaded", () => {
             if (!response.ok) {
                 throw new Error('Błąd podczas pobierania danych');
             }
-            const subjects = await response.json();
-            
-            //console.log(response);
-            console.log(subjects);
-            // narazie tyle wystarczy, w tym miejscu powinno dać json'a z blokami zajęć dla podanych filtrów
-            // skup się na samej logice filtrowania
+
+            const classPeriods = await response.json();
+
+            console.log(classPeriods);
+
         } catch (error) {
             console.error('Wystąpił błąd:', error);
         }
