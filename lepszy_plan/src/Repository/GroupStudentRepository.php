@@ -16,18 +16,6 @@ class GroupStudentRepository extends ServiceEntityRepository
         parent::__construct($registry, GroupStudent::class);
     }
 
-    public function findGroupsByStudentId(int $studentIndex): array
-    {
-        return $this->createQueryBuilder('gs')
-            ->select('cg.number') // Wybieramy dane grupy
-            ->join('gs.student', 's') // Łączymy z tabelą student
-            ->join('gs.group','cg')
-            ->where('s.studentIndex = :studentIndex') // Filtrujemy po ID studenta
-            ->setParameter('studentIndex', $studentIndex)
-            ->getQuery()
-            ->getResult();
-    }
-
     //    /**
     //     * @return GroupStudent[] Returns an array of GroupStudent objects
     //     */

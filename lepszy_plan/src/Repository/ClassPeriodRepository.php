@@ -16,18 +16,6 @@ class ClassPeriodRepository extends ServiceEntityRepository
         parent::__construct($registry, ClassPeriod::class);
     }
 
-    public function findSubjectsByIndex(int $studentIndex): array
-    {
-        return $this->createQueryBuilder('cp')
-            ->join('cp.subject', 'sub')
-            ->join('App\Entity\GroupStudent', 'gs', 'WITH', 'gs.group = cp.group')
-            ->join('App\Entity\Student', 's', 'WITH', 's.id = gs.student')
-            ->where('s.studentIndex = :studentIndex') // Filtrujemy po ID studenta
-            ->setParameter('studentIndex', $studentIndex)
-            ->getQuery()
-            ->getResult();
-    }
-
     //    /**
     //     * @return ClassPeriod[] Returns an array of ClassPeriod objects
     //     */
