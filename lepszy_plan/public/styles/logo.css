@@ -1,0 +1,25 @@
+.logo-container {
+    position: absolute;
+    display: flex;
+    align-items: flex-start;
+    top: 10px;
+    left: 50px;
+    z-index: 100;
+}
+
+.logo {
+    width: 100px;
+    height: auto;
+}
+
+.logo-label {
+    margin-left: 10px;
+    margin-top: 10px;
+    font-size: 18px;
+    font-weight: bold;
+    color: #333;
+    width: 300px;
+}
+body.dark-mode .logo-label{
+    color: white;
+}

@@ -9,13 +9,22 @@
     <link rel="stylesheet" href="styles/calendar_section.css">
     <link rel="stylesheet" href="styles/control_section.css">
     <link rel="stylesheet" href="styles/switches.css">
+    <link rel="stylesheet" href="styles/logo.css">
 {% endblock %}
 
 {% block javascripts %}
     <script src="{{ asset('scripts/switches.js') }}"></script>
+    <script src="{{ asset('scripts/buttons.js') }}"></script>
 {% endblock %}
 
 {% block body %}
+
+    {% block images %}
+        <div class="logo-container">
+            <img src="images/zut.png" alt="Logo" class="logo">
+            <span class="logo-label">Zachodniopomorski Uniwersytet Technologiczny w Szczecinie</span>
+        </div>
+    {% endblock %}
 
     {% block controls %}
         {% include 'controls/controls_container.html.twig' %}
