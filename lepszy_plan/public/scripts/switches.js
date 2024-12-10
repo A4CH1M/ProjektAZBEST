@@ -16,6 +16,13 @@ document.addEventListener("DOMContentLoaded", () => {
     const subjectFilter = document.getElementById("filter_course");
     const classTypeFilter = document.getElementById("filter_form");
 
+    document.addEventListener("keydown", (event) => {
+        if (event.key === "Enter") {
+            event.preventDefault();
+            searchButton.click();
+        }
+    });
+
     searchButton.addEventListener("click", async () => {
         try {
             const teacherName = teacherFilter ? teacherFilter.value : '';
@@ -59,7 +66,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
             const classPeriods = await response.json();
 
-            console.log(classPeriods);
+            addEventsToCalendar(classPeriods)
 
         } catch (error) {
             console.error('Wystąpił błąd:', error);
