@@ -22,6 +22,10 @@ services:
     App\Service\ApiDataManager:
         autowire: true
         autoconfigure: true
+    App\Service\ApiDataScheduler:
+        autowire: true
+        autoconfigure: true
+    Symfony\Component\Console\Application: '@console.messenger.application'
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
