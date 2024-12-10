@@ -8,8 +8,7 @@ document.addEventListener('DOMContentLoaded', function () {
         buttonText: buttonText,
         //height: '1000', // Automatyczna wysokość
         locale: 'pl',
-        multiMonthMaxColumns: 4,// Język polski
-        multiMonthMaxRows: 3,
+        multiMonthMaxColumns: 2,// Język polski
         events: events,
         views: views,
         slotMinTime: '07:00:00' ,     // Minimalna godzina w widokach dziennym/tygodniowym
