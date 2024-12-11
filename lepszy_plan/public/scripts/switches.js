@@ -1,4 +1,4 @@
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", async() => {
     const checkbox = document.getElementById("filter-logic-switch");
     const label = document.getElementById("filter-logic-text");
 
@@ -10,11 +10,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const teacherFilter = document.getElementById("filter_teacher");
     const studentFilter = document.getElementById("filter_student");
-    const groupFilter = document.getElementById("filter_grup");
+    const groupFilter = document.getElementById("filter_group");
     const roomFilter = document.getElementById("filter_room");
-    const departmentFilter = document.getElementById("filter_faculty");
-    const subjectFilter = document.getElementById("filter_course");
-    const classTypeFilter = document.getElementById("filter_form");
+    const departmentFilter = document.getElementById("filter_department");
+    const subjectFilter = document.getElementById("filter_subject");
+    const classTypeFilter = document.getElementById("filter_type");
 
     document.addEventListener("keydown", (event) => {
         if (event.key === "Enter") {
@@ -22,7 +22,26 @@ document.addEventListener("DOMContentLoaded", () => {
             searchButton.click();
         }
     });
+    const fetchAndApplyFilters = async (params) => {
+        const apiUrl = `/api/class-period?${params.toString()}`;
 
+        try {
+            const response = await fetch(apiUrl);
+
+            if (!response.ok) {
+                throw new Error('Błąd podczas pobierania danych');
+            }
+
+            const classPeriods = await response.json();
+            addEventsToCalendar(classPeriods);
+        } catch (error) {
+            console.error('Wystąpił błąd:', error);
+        }
+    };
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.toString()) {
+        await fetchAndApplyFilters(urlParams);
+    }
     searchButton.addEventListener("click", async () => {
         try {
             const teacherName = teacherFilter ? teacherFilter.value : '';
@@ -39,26 +58,36 @@ document.addEventListener("DOMContentLoaded", () => {
                 return;
             }
 
-            let url = '/api/class-period?';
-            if (teacherName !== '')
-                url += `teacher=${encodeURIComponent(teacherName)}&`;
-            if (studentIndex !== '')
-                url += `student=${encodeURIComponent(studentIndex)}&`;
-            if (groupNumber !== '')
-                url += `group=${encodeURIComponent(groupNumber)}&`;
-            if (roomNumber !== '')
-                url += `room=${encodeURIComponent(roomNumber)}&`;
-            if (departmentName !== '')
-                url += `department=${encodeURIComponent(departmentName)}&`;
-            if (subjectName !== '')
-                url += `subject=${encodeURIComponent(subjectName)}&`;
-            if (classTypeName !== '')
-                url += `class_type=${encodeURIComponent(classTypeName)}`;
+            const currentParams = new URLSearchParams();
 
-            if (url[-1] === '&')
-                url = url.slice(0, -1);
+            if (teacherName) currentParams.set('teacher', teacherName);
+            else currentParams.delete('teacher');
 
-            const response = await fetch(url);
+            if (studentIndex) currentParams.set('student', studentIndex);
+            else currentParams.delete('student');
+
+            if (groupNumber) currentParams.set('group', groupNumber);
+            else currentParams.delete('group');
+
+            if (roomNumber) currentParams.set('room', roomNumber);
+            else currentParams.delete('room');
+
+            if (departmentName) currentParams.set('department', departmentName);
+            else currentParams.delete('department');
+
+            if (subjectName) currentParams.set('subject', subjectName);
+            else currentParams.delete('subject');
+
+            if (classTypeName) currentParams.set('class_type', classTypeName);
+            else currentParams.delete('class_type');
+
+            const apiUrl = `/api/class-period?${currentParams.toString()}`;
+
+            const response = await fetch(apiUrl);
+
+            const newUrl = `${window.location.pathname}?${currentParams.toString()}`;
+            window.history.replaceState(null, '', newUrl);
+
 
             if (!response.ok) {
                 throw new Error('Błąd podczas pobierania danych');
