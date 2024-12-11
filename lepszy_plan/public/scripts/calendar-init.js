@@ -14,6 +14,7 @@ document.addEventListener('DOMContentLoaded', function () {
         views: views,
         slotMinTime: '07:00:00' ,     // Minimalna godzina w widokach dziennym/tygodniowym
         slotMaxTime: '21:00:00',      // Maksymalna godzina w widokach dziennym/tygodniowym
+        allDaySlot: false,
         // customButtons: customButtons
         // eventMouseEnter: function (info) {
         //     // Tworzymy tooltip
