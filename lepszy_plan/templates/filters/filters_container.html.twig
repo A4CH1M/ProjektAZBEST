@@ -1,13 +1,13 @@
 <div id="filters-container">
     <div id="filters">
         {% set filters = [
-            { id: 'filter_teacher', label: 'Wykładowca', name: 'filter_teacher', placeholder: 'Podaj wykładowcę' },
-            { id: 'filter_student', label: 'Nr albumu', name: 'filter_student', placeholder: 'Podaj numer albumu' },
-            { id: 'filter_subject', label: 'Przedmiot', name: 'filter_subject', placeholder: 'Podaj przedmiot' },
-            { id: 'filter_department', label: 'Wydział', name: 'filter_department', placeholder: 'Podaj wydział' },
-            { id: 'filter_room', label: 'Sala', name: 'filter_room', placeholder: 'Podaj salę' },
-            { id: 'filter_group', label: 'Grupa', name: 'filter_group', placeholder: 'Podaj grupę' },
-            { id: 'filter_type', label: 'Forma zajęć', name: 'filter_type', placeholder: 'Podaj formę zajęć' }
+            { id: 'filter_teacher', filter_id: 'filter-container-teacher', label: 'Wykładowca', name: 'filter_teacher', placeholder: 'Podaj wykładowcę' },
+            { id: 'filter_student', filter_id: 'filter-container-student', label: 'Nr albumu', name: 'filter_student', placeholder: 'Podaj numer albumu' },
+            { id: 'filter_subject', filter_id: 'filter-container-subject', label: 'Przedmiot', name: 'filter_subject', placeholder: 'Podaj przedmiot' },
+            { id: 'filter_department', filter_id: 'filter-container-department', label: 'Wydział', name: 'filter_department', placeholder: 'Podaj wydział' },
+            { id: 'filter_room', filter_id: 'filter-container-room', label: 'Sala', name: 'filter_room', placeholder: 'Podaj salę' },
+            { id: 'filter_group', filter_id: 'filter-container-group', label: 'Grupa', name: 'filter_group', placeholder: 'Podaj grupę' },
+            { id: 'filter_type', filter_id: 'filter-container-type', label: 'Forma zajęć', name: 'filter_type', placeholder: 'Podaj formę zajęć' }
         ] %}
         {% for filter in filters %}
             {% include 'filters/filter_field.html.twig' with filter %}

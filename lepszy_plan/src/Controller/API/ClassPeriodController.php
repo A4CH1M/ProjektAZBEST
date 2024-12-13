@@ -1,16 +1,16 @@
 <?php
 
-namespace App\Controller;
+namespace App\Controller\API;
 
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use App\Repository\ClassPeriodRepository;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Annotation\Route;
 
 class ClassPeriodController extends AbstractController
 {
-    #[Route('/api/class-period', name: 'api_classPeriod', methods: ['GET'])]
+    #[Route('/api/class-period', name: 'api_class_period', methods: ['GET'])]
     public function getClassPeriods(Request $request, ClassPeriodRepository $classPeriodRepository): JsonResponse
     {
         $student = $request->query->get('student');

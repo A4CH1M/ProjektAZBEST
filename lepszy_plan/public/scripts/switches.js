@@ -1,3 +1,4 @@
+
 document.addEventListener("DOMContentLoaded", async() => {
     const checkbox = document.getElementById("filter-logic-switch");
     const label = document.getElementById("filter-logic-text");
