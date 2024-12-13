@@ -25,6 +25,7 @@ use mysql_xdevapi\Exception;
 use PHPUnit\TextUI\XmlConfiguration\Group;
 use Symfony\Component\HttpClient\Response\MockResponse;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Yaml\Yaml;
 use function PHPUnit\Framework\assertArrayHasKey;
 
 class ApiDataManager
@@ -255,22 +256,27 @@ class ApiDataManager
         return new Response('Downloaded Groups (not all)');
     }
 
-    public function classPeriodDownload(): Response
+    public function classPeriodDownload($start, $end): Response
     {
         ini_set("memory_limit", "-1");
         set_time_limit(3600);
+        date_default_timezone_set('Europe/Warsaw');
 
-        $this->entityManager->createQuery('DELETE FROM App\Entity\ClassPeriod')->execute();
-        $this->entityManager->createQuery('DELETE FROM App\Entity\GroupStudent')->execute();
-        $this->entityManager->createQuery('DELETE FROM App\Entity\Student')->execute();
-        $this->entityManager->createQuery('DELETE FROM App\Entity\ClassType')->execute();
+        $this->entityManager->createQueryBuilder()
+            ->delete(ClassPeriod::class, 'cp')
+            ->where('cp.datetimeStart >= :start')
+            ->andWhere('cp.datetimeStart <= :end')
+            ->setParameter('start', $start)
+            ->setParameter('end', $end)
+            ->getQuery()
+            ->execute();
 
         $classTypes = [];
         $classPeriods = [];
         $newGroups = [];
 
-        for ($i = 51000; $i < 51050; $i++) {
-            $url = 'https://plan.zut.edu.pl/schedule_student.php?number=' . $i . '&start=2024-11-25T00%3A00%3A00%2B01%3A00&end=2024-12-09T00%3A00%3A00%2B01%3A00';
+        for ($i = 51050; $i < 51150; $i++) {
+            $url = 'https://plan.zut.edu.pl/schedule_student.php?number=' . $i . '&start=' . $start . '&end=' . $end;
             $json = file_get_contents($url);
 
             if (!str_contains($json, ',')) {
@@ -312,8 +318,7 @@ class ApiDataManager
                         $this->entityManager->persist($group);
                     }
 
-                    if (!$this->groupStudentRepository->findOneBy(['group' => $group, 'student' => $student]))
-                    {
+                    if (!$this->groupStudentRepository->findOneBy(['group' => $group, 'student' => $student])) {
                         $groupStudent = new GroupStudent();
                         $groupStudent->setStudent($student);
                         $groupStudent->setGroup($group);
@@ -347,6 +352,14 @@ class ApiDataManager
                 $teacherName = $entry['worker'];
                 $teacher = $this->teacherRepository->findOneBy(['fullName' => $teacherName]);
 
+                if (!$teacher) {
+                    echo "Worker: " . $teacherName . PHP_EOL;
+                    $teacher = new Teacher();
+                    $teacher->setFullName($teacherName);
+                    $this->entityManager->persist($teacher);
+                    $this->entityManager->flush();
+                }
+
                 if (str_contains($entry['room'], ' ')) {
                     $roomName = explode(' ', $entry['room'], 2)[1];
                 }
@@ -358,6 +371,14 @@ class ApiDataManager
 
                 $subjectName = mb_convert_case($entry['subject'], MB_CASE_TITLE, "UTF-8");
                 $subject = $this->subjectRepository->findOneBy(['name' => $subjectName]);
+
+                if (!$subject) {
+                    echo "Subject: " . $subjectName . PHP_EOL;
+                    $subject = new Subject();
+                    $subject->setName($subjectName);
+                    $this->entityManager->persist($subject);
+                    $this->entityManager->flush();
+                }
 
                 $dateStart = new \DateTime($entry['start']);
                 $dateEnd = new \DateTime($entry['end']);
@@ -399,6 +420,37 @@ class ApiDataManager
         return new Response('Downloaded Students, Class Types, Class Periods and remaining groups');
     }
 
+    public function classPeriodDownloadWrapper(bool $wholeSemester) {
+        if ($wholeSemester) {
+            $semesterData = Yaml::parseFile(__DIR__.'/../../config/semester.yaml');
+
+            $start = (new \DateTime($semesterData['previous-semester']['start']))->format('Y-m-d');
+            $end = (new \DateTime($semesterData['current-semester']['end']))->format('Y-m-d');
+
+            $this->entityManager->createQuery('DELETE FROM App\Entity\ClassPeriod')->execute();
+            $this->entityManager->createQuery('DELETE FROM App\Entity\ClassType')->execute();
+            $this->entityManager->createQuery('DELETE FROM App\Entity\Room')->execute();
+            $this->entityManager->createQuery('DELETE FROM App\Entity\Department')->execute();
+            $this->entityManager->createQuery('DELETE FROM App\Entity\GroupStudent')->execute();
+            $this->entityManager->createQuery('DELETE FROM App\Entity\Student')->execute();
+            $this->entityManager->createQuery('DELETE FROM App\Entity\ClassGroup')->execute();
+            $this->entityManager->createQuery('DELETE FROM App\Entity\Subject')->execute();
+            $this->entityManager->createQuery('DELETE FROM App\Entity\Teacher')->execute();
+
+            $this->teacherDownload();
+            $this->roomDownload();
+            $this->subjectDownload();
+            $this->groupDownload();
+        }
+        else {
+            $start = date('Y-m-d');
+            $end = date('Y-m-d', strtotime('+7 days'));
+        }
+
+        $this->classPeriodDownload($start, $end);
+    }
+
+    //deprecated
     public function apiDataDownload(): Response
     {
         ini_set("memory_limit", "-1");
