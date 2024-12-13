@@ -1,22 +1,22 @@
 <?php
 
-namespace App\Controller;
+namespace App\Controller\API;
 
+use App\Repository\RoomRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use App\Repository\ClassGroupRepository;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Annotation\Route;
 
-class ClassGroupController extends AbstractController
+class RoomController extends AbstractController
 {
-    #[Route('/api/classGroup', name: 'api_classGroup', methods: ['GET'])]
-    public function getClassGroup(Request $request, ClassGroupRepository $repository): JsonResponse
+    #[Route('/api/room', name: 'api_room', methods: ['GET'])]
+    public function getRoom(Request $request, RoomRepository $repository): JsonResponse
     {
         $filter = $request->query->get('filter');
 
-        $qb = $repository->createQueryBuilder('cg');
-        $objects = $qb->where('cg.number LIKE :filter')
+        $qb = $repository->createQueryBuilder('r');
+        $objects = $qb->where('r.number LIKE :filter')
             ->setParameter('filter', $filter . '%')
             ->setMaxResults(5)
             ->getQuery()

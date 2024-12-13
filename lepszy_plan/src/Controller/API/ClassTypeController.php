@@ -1,16 +1,16 @@
 <?php
 
-namespace App\Controller;
+namespace App\Controller\API;
 
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use App\Repository\ClassTypeRepository;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Annotation\Route;
 
 class ClassTypeController extends AbstractController
 {
-    #[Route('/api/classType', name: 'api_classType', methods: ['GET'])]
+    #[Route('/api/class-type', name: 'api_class_type', methods: ['GET'])]
     public function getClassType(Request $request, ClassTypeRepository $repository): JsonResponse
     {
         $filter = $request->query->get('filter');

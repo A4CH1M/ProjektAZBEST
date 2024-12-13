@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Controller;
+namespace App\Controller\API;
 
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use App\Repository\DepartmentRepository;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Annotation\Route;
 
 class DepartmentController extends AbstractController
 {
