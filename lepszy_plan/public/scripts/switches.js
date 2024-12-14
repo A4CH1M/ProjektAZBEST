@@ -15,6 +15,7 @@ document.addEventListener("DOMContentLoaded", async() => {
     const departmentFilter = document.getElementById("filter_department");
     const subjectFilter = document.getElementById("filter_subject");
     const classTypeFilter = document.getElementById("filter_type");
+    const filterLogicSwitch = document.getElementById("filter-logic-switch");
 
     document.addEventListener("keydown", (event) => {
         if (event.key === "Enter") {
@@ -51,6 +52,7 @@ document.addEventListener("DOMContentLoaded", async() => {
             const departmentName = departmentFilter ? departmentFilter.value : '';
             const subjectName = subjectFilter ? subjectFilter.value : '';
             const classTypeName = classTypeFilter ? classTypeFilter.value : '';
+            const filterLogic = filterLogicSwitch.checked ? 'OR' : 'AND';
 
             if (teacherName === '' && studentIndex === '' && groupNumber === ''
                 && roomNumber === '' && departmentName === '' && subjectName === ''
@@ -80,6 +82,8 @@ document.addEventListener("DOMContentLoaded", async() => {
 
             if (classTypeName) currentParams.set('class_type', classTypeName);
             else currentParams.delete('class_type');
+
+            currentParams.set('filter_logic', filterLogic);
 
             const apiUrl = `/api/class-period?${currentParams.toString()}`;
 
