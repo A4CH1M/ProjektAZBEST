@@ -19,47 +19,63 @@ class ClassPeriodController extends AbstractController
         $subject = $request->query->get('subject');
         $teacher = $request->query->get('teacher');
         $classType = $request->query->get('class_type');
+        $filterLogic = strtoupper($request->query->get('filter_logic', 'AND'));
 
         $classPeriods = [];
         if ($student || $group || $room || $subject || $teacher || $classType) {
-            $qb = $classPeriodRepository->createQueryBuilder('cp'); // 'cp' to alias dla ClassPeriod
+            $qb = $classPeriodRepository->createQueryBuilder('cp');
+
+            $joinType = $filterLogic === 'OR' ? 'leftJoin' : 'innerJoin';
 
             if ($student) {
-                $qb->join('cp.subject', 'sub')
-                    ->join('App\Entity\GroupStudent', 'gs', 'WITH', 'gs.group = cp.group')
-                    ->join('App\Entity\Student', 's', 'WITH', 's.id = gs.student')
+                $qb->$joinType('cp.subject', 'sub')
+                    ->$joinType('App\Entity\GroupStudent', 'gs', 'WITH', 'gs.group = cp.group')
+                    ->$joinType('App\Entity\Student', 's', 'WITH', 's.id = gs.student')
                     ->where('s.studentIndex = :studentIndex')
                     ->setParameter('studentIndex', $student);
             }
 
             if ($teacher) {
-                $qb->join('cp.teacher', 't')
+                $qb->$joinType('cp.teacher', 't')
                     ->andWhere('t.fullName = :teacher')
                     ->setParameter('teacher', $teacher);
             }
 
-            // do sprawdzenia w konsoli jak ukladane jest zapytanie
-            // return new JsonResponse(['dql' => $qb->getDQL()]);
-
             if ($group) {
-                $qb->join('cp.group', 'g')
+                $qb->$joinType('cp.group', 'g')
                     ->andWhere('g.number = :group')
                     ->setParameter('group', $group);
             }
+
             if ($room) {
-                $qb->join('cp.room', 'r')
+                $qb->$joinType('cp.room', 'r')
                     ->andWhere('r.number = :room')
                     ->setParameter('room', $room);
             }
+
             if ($subject) {
-                $qb->join('cp.subject', 'subj')
+                $qb->$joinType('cp.subject', 'subj')
                     ->andWhere('subj.name = :subject')
                     ->setParameter('subject', $subject);
             }
+
             if ($classType) {
-                $qb->join('cp.classType', 'ct')
+                $qb->$joinType('cp.classType', 'ct')
                     ->andWhere('ct.type = :classType')
                     ->setParameter('classType', $classType);
+            }
+
+            if ($filterLogic === 'OR') {
+                $qb->orWhere(
+                    $qb->expr()->orX(
+                        $student ? 's.studentIndex = :studentIndex' : '1=0',
+                        $teacher ? 't.fullName = :teacher' : '1=0',
+                        $group ? 'g.number = :group' : '1=0',
+                        $room ? 'r.number = :room' : '1=0',
+                        $subject ? 'subj.name = :subject' : '1=0',
+                        $classType ? 'ct.type = :classType' : '1=0',
+                    )
+                );
             }
 
             $classPeriods = $qb->getQuery()->getResult();
