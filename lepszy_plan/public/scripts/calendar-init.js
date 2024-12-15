@@ -15,37 +15,44 @@ document.addEventListener('DOMContentLoaded', function () {
         slotMinTime: '07:00:00' ,     // Minimalna godzina w widokach dziennym/tygodniowym
         slotMaxTime: '21:00:00',      // Maksymalna godzina w widokach dziennym/tygodniowym
         allDaySlot: false,
-        // customButtons: customButtons
-        // eventMouseEnter: function (info) {
-        //     // Tworzymy tooltip
-        //     const tooltip = document.createElement('div');
-        //     tooltip.className = 'tooltip';
-        //     tooltip.innerHTML = `
-        //         <strong>${info.event.title}</strong><br>
-        //         <b>Grupa:</b> ${info.event.extendedProps.group}<br>
-        //         <b>Sala:</b> ${info.event.extendedProps.room}<br>
-        //         <b>Wydział:</b> ${info.event.extendedProps.department}<br>
-        //         <b>Godzina:</b> ${info.event.start.toLocaleTimeString()} - ${info.event.end.toLocaleTimeString()}
-        //     `;
-        //     document.body.appendChild(tooltip);
-        //
-        //     // Pozycjonowanie tooltipa
-        //     tooltip.style.position = 'absolute';
-        //     tooltip.style.left = `${info.jsEvent.pageX + 10}px`;
-        //     tooltip.style.top = `${info.jsEvent.pageY + 10}px`;
-        //     tooltip.style.zIndex = 1000;
-        //
-        //     // Przechowujemy tooltip w eventie
-        //     info.event.extendedProps.tooltip = tooltip;
-        // },
-        // eventMouseLeave: function (info) {
-        //
-        //     const tooltip = info.event.extendedProps.tooltip;
-        //     if (tooltip) {
-        //         tooltip.remove();
-        //         info.event.extendedProps.tooltip = null;
-        //     }
-        // }
+        eventMouseEnter: function (info) {
+            // Tworzymy tooltip
+            const tooltip = document.createElement('div');
+            tooltip.className = 'tooltip'; // Dodajemy klasę CSS
+            tooltip.innerHTML = `
+        <strong>${info.event.title}</strong><br>
+        <b>Grupa:</b> ${info.event.extendedProps.group}<br>
+        <b>Sala:</b> ${info.event.extendedProps.room}<br>
+        <b>Wydział:</b> ${info.event.extendedProps.department}<br>
+        <b>Godzina:</b> ${info.event.start.toLocaleTimeString()} - ${info.event.end.toLocaleTimeString()}
+    `;
+            document.body.appendChild(tooltip);
+
+            // Pozycjonowanie tooltipa
+            tooltip.style.position = 'absolute';
+            tooltip.style.left = `${info.jsEvent.pageX + 10}px`;
+            tooltip.style.top = `${info.jsEvent.pageY + 10}px`;
+            tooltip.style.zIndex = 1000;
+
+            // Przechowujemy tooltip w elemencie
+            info.el.tooltip = tooltip;
+
+            // Aktualizacja pozycji podczas ruchu myszki
+            info.el.addEventListener('mousemove', function (e) {
+                tooltip.style.left = `${e.pageX + 10}px`;
+                tooltip.style.top = `${e.pageY + 10}px`;
+            });
+        },
+        eventMouseLeave: function (info) {
+            // Pobieramy tooltip
+            const tooltip = info.el.tooltip;
+
+            // Usuwamy tooltip, jeśli istnieje
+            if (tooltip) {
+                tooltip.remove();
+                info.el.tooltip = null;
+            }
+        },
 
     });
 

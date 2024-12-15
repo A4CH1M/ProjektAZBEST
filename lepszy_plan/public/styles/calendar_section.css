@@ -44,3 +44,16 @@ body.dark-mode #calendar button{
 body.dark-mode #calendar button:hover{
     background-color: #232323;
 }
+
+.tooltip {
+    background-color: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    font-size: 14px;
+    pointer-events: none;
+    max-width: 200px;
+    word-wrap: break-word;
+    text-align: left;
+}
