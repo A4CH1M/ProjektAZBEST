@@ -23,6 +23,21 @@ document.addEventListener("DOMContentLoaded", async() => {
             searchButton.click();
         }
     });
+
+    const addFilterCommaKeyListener = (filter) => {
+        filter.addEventListener("keydown", (event) => {
+            if (event.key === ",") {
+                if (!filter.value.includes(",")) {
+                    filter.value += ", ";
+                }
+                event.preventDefault();
+            }
+        });
+    }
+
+    addFilterCommaKeyListener(teacherFilter);
+    addFilterCommaKeyListener(studentFilter);
+
     const fetchAndApplyFilters = async (params) => {
         const apiUrl = `/api/class-period?${params.toString()}`;
 
@@ -60,13 +75,46 @@ document.addEventListener("DOMContentLoaded", async() => {
                 return;
             }
 
+            let teacherNames;
+            let studentIndexes;
+
+            if (teacherName.includes(',')) {
+                teacherNames = teacherName.split(',').map(name => name.trim());
+
+            }
+            else {
+                teacherNames = [teacherName];
+            }
+
+            if (studentIndex.includes(',')) {
+                studentIndexes = studentIndex.split(',').map(sIdx => sIdx.trim());
+            }
+            else {
+                studentIndexes = [studentIndex];
+            }
+
+            if (teacherNames.length > 1 && studentIndex !== '' ||
+                studentIndexes.length > 1 && teacherName !== '') {
+                //console.error("Maksymalnie plany 2 osób (<wykładowca, wykładowca>, <wykładowca, student>, <student, student>)");
+                alert("Maksymalnie plany 2 osób: \n- <wykładowca, wykładowca> \n- <wykładowca, student> \n- <student, student>");
+                return;
+            }
+
             const currentParams = new URLSearchParams();
 
-            if (teacherName) currentParams.set('teacher', teacherName);
-            else currentParams.delete('teacher');
+            if (teacherName) {
+                for (let i = 0; i < teacherNames.length; i++) {
+                    currentParams.set(`teacher${i+1}`, teacherNames[i]);
+                }
+            }
+            //else currentParams.delete('teacher');
 
-            if (studentIndex) currentParams.set('student', studentIndex);
-            else currentParams.delete('student');
+            if (studentIndex) {
+                for (let i = 0; i < studentIndexes.length; i++) {
+                    currentParams.set(`student${i+1}`, studentIndexes[i]);
+                }
+            }
+            //else currentParams.delete('student');
 
             if (groupNumber) currentParams.set('group', groupNumber);
             else currentParams.delete('group');
