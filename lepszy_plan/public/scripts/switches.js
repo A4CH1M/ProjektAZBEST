@@ -97,6 +97,14 @@ document.addEventListener("DOMContentLoaded", async() => {
                 throw new Error('Błąd podczas pobierania danych');
             }
 
+            updateSearchHistory('teacher', teacherName);
+            updateSearchHistory('student', studentIndex);
+            updateSearchHistory('group', groupNumber);
+            updateSearchHistory('room', roomNumber);
+            updateSearchHistory('department', departmentName);
+            updateSearchHistory('subject', subjectName);
+            updateSearchHistory('class_type', classTypeName);
+
             const classPeriods = await response.json();
 
             addEventsToCalendar(classPeriods)
@@ -113,3 +121,25 @@ document.addEventListener("DOMContentLoaded", async() => {
     });
 });
 
+
+function updateSearchHistory(fieldKey, value) {
+    if (!value) return; // Nie zapisujemy pustych wartości
+
+    // Pobierz aktualną historię z localStorage
+    const historyKey = `searchHistory_${fieldKey}`;
+    let history = JSON.parse(localStorage.getItem(historyKey)) || [];
+
+    // Usuń duplikaty
+    history = history.filter(item => item !== value);
+
+    // Dodaj nową wartość na początek
+    history.unshift(value);
+
+    // Ogranicz historię do 5 elementów
+    if (history.length > 5) {
+        history.pop();
+    }
+
+    // Zapisz historię z powrotem do localStorage
+    localStorage.setItem(historyKey, JSON.stringify(history));
+}
