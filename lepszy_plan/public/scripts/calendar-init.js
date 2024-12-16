@@ -9,10 +9,11 @@ document.addEventListener('DOMContentLoaded', function () {
         buttonText: buttonText,
         //height: '1000', // Automatyczna wysokość
         locale: 'pl',
-        multiMonthMaxColumns: 2,// Język polski
+        multiMonthMaxColumns: 2,// Język polsk
+        firstDay: 1,
         events: events,
         views: views,
-        slotMinTime: '07:00:00' ,     // Minimalna godzina w widokach dziennym/tygodniowym
+        slotMinTime: '07:00:00',     // Minimalna godzina w widokach dziennym/tygodniowym
         slotMaxTime: '21:00:00',      // Maksymalna godzina w widokach dziennym/tygodniowym
         allDaySlot: false,
         eventMouseEnter: function (info) {
