@@ -1,6 +1,6 @@
 function addEventsToCalendar(classPeriods) {
     const events = classPeriods.map(period => ({
-        title: `${period.subject} (${period.class_type}) - ${period.teacher}`,
+        title: `${period.subject} (${period.class_type})`,
         start: period.start,
         end: period.end,
         extendedProps: {

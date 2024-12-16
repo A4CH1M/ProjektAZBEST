@@ -45,6 +45,21 @@ body.dark-mode #calendar button:hover{
     background-color: #232323;
 }
 
+.fc-timegrid-event-harness {
+    flex: 1 1 auto; /* Elastyczny rozmiar dla kafelków */
+    min-width: 30px; /* Minimalna szerokość kafelka */
+}
+
+@media (max-width: 768px) {
+    .fc-timegrid-event {
+        font-size: 10px; /* Zmniejszenie rozmiaru czcionki */
+        padding: 3px; /* Zmniejszenie paddingu */
+    }
+    .fc-timegrid-slot {
+        height: 20px; /* Niższe sloty czasu dla mniejszych ekranów */
+    }
+}
+
 .tooltip {
     background-color: rgba(0, 0, 0, 0.8);
     color: white;
