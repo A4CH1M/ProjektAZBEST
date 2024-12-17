@@ -96,3 +96,8 @@ body.dark-mode button:hover{
 body.dark-mode {
     background-color: #121212;
 }
+
+body.dark-mode .suggestion-box div {
+    background-color: #373434;
+    color: #FFFFFF;
+}
