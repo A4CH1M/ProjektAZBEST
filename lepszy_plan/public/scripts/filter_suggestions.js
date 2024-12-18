@@ -13,14 +13,6 @@ function initializeSuggestionBoxesAndInputs() {
         const suggestionBox = document.createElement("div");
         suggestionBox.id = `suggestion-box-${fieldKey}`;
         suggestionBox.className = "suggestion-box";
-        suggestionBox.style.position = "absolute";
-        suggestionBox.style.border = "1px solid #ccc";
-        suggestionBox.style.backgroundColor = "#fff";
-        suggestionBox.style.zIndex = "1000";
-        suggestionBox.style.width = `${filterElement.offsetWidth}px`;
-        suggestionBox.style.maxHeight = "150px";
-        suggestionBox.style.overflowY = "auto";
-        suggestionBox.style.display = "none";
 
         document.body.appendChild(suggestionBox);
 
@@ -28,6 +20,7 @@ function initializeSuggestionBoxesAndInputs() {
             const rect = filterElement.getBoundingClientRect();
             suggestionBox.style.top = `${rect.bottom + window.scrollY}px`;
             suggestionBox.style.left = `${rect.left + window.scrollX}px`;
+            suggestionBox.style.width = `${rect.width}px`; // Dopasowanie szerokości
         };
 
         positionSuggestionBox();
@@ -69,8 +62,7 @@ function initializeSuggestionBoxesAndInputs() {
         suggestions.forEach((item) => {
             const suggestionItem = document.createElement("div");
             suggestionItem.textContent = item;
-            suggestionItem.style.padding = "5px";
-            suggestionItem.style.cursor = "pointer";
+            suggestionItem.className = "suggestion-item";
 
             suggestionItem.addEventListener("click", () => {
                 filterElement.value = item;
