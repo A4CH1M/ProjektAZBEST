@@ -147,6 +147,8 @@ document.addEventListener("DOMContentLoaded", async() => {
 
             const classPeriods = await response.json();
 
+            console.log(classPeriods);
+
             addEventsToCalendar(classPeriods)
 
         } catch (error) {

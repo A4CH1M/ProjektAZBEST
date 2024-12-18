@@ -1,12 +1,13 @@
 function addEventsToCalendar(classPeriods) {
     const events = classPeriods.map(period => ({
-        title: `${period.subject} (${period.class_type})`,
+        title: `${period.subject} (${period.class_type}) - ${period.teacher}`,
         start: period.start,
         end: period.end,
         extendedProps: {
             group: period.group,
             room: period.room,
             department: period.department,
+            teacher: period.teacher
         },
         backgroundColor: getClassTypeColor(period.class_type) // Ustawiamy kolor bloku
     }));
